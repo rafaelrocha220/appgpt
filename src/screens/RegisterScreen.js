@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { View, Text, Alert, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
    const navigation = useNavigation();
    const [name, setName] = useState('');
    const [password, setPassword] = useState('');
+   const [passwordConfirm, setPasswordConfirm] = useState('');
+
 
    const handleLogin = () => {
-      if (name == 'admin' && password == 'admin') {
+      if (name !== '' && password !== '' && passwordConfirm == password) {
          navigation.navigate('Chat')
       } else {
-         alert('Opss! Login incorreto.')
+         alert('Você preencheu todos os campos corretamente?')
       }
    }
 
    const handleRegister = () => {
-      navigation.navigate('Register')
+      navigation.navigate('Login')
    }
 
    return (
@@ -31,19 +33,25 @@ export default function LoginScreen() {
                placeholderTextColor='#000' autoCorrect={false}
                onChangeText={(event) => setName(event)}
             />
+
             <TextInput style={styles.inputForm} placeholder='Senha'
                autoCompleteType='password' autoCapitalize='none'
                placeholderTextColor='#000' secureTextEntry={true} autoCorrect={false}
                onChangeText={(event) => setPassword(event)}
             />
+            <TextInput style={styles.inputForm} placeholder='Confirmar senha'
+               autoCompleteType='password' autoCapitalize='none'
+               placeholderTextColor='#000' secureTextEntry={true} autoCorrect={false}
+               onChangeText={(event) => setPasswordConfirm(event)}
+            />
             <TouchableOpacity style={styles.buttonForm}
                onPress={handleLogin} >
-               <Text style={styles.textButton}>Entrar</Text>
+               <Text style={styles.textButton}>Registrar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.buttonFormRegister}
                onPress={handleRegister} >
-               <Text style={styles.textButtonRegister}>Ainda não tem conta?</Text>
+               <Text style={styles.textButtonRegister}>Já possui conta?</Text>
             </TouchableOpacity>
          </View>
       </KeyboardAvoidingView>
