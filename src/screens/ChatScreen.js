@@ -3,8 +3,10 @@ import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Keyboard
 import { Ionicons } from '@expo/vector-icons';
 import UserMessage from '../components/UserMessage';
 import Message from '../components/Message';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatScreen = () => {
+   const navigation = useNavigation();
    const [message, setMessage] = useState([]);
    const [userMessage, setUserMessage] = useState('');
    const [isFlatListReady, setIsFlatListReady] = useState(false);
@@ -28,7 +30,7 @@ const ChatScreen = () => {
                }),
             });
             const data = await response.json();
-            const botresponse = 'choices' in data ? data.choices[0].text.trim() : JSON.stringify(data);
+            const botresponse = 'choices' in data ? data.choices[0].text.trim() : 'O token do chatgpt não está funcionando corretamente: \n\n' + JSON.stringify(data);
             setMessage((prevState) => [...prevState, { message: botresponse, isUser: false }]);
          } catch (error) {
             setMessage((prevState) => [...prevState, { message: 'Erro de conexão', isUser: false }]);
@@ -37,17 +39,20 @@ const ChatScreen = () => {
       }
    };
 
-
    const handleContentSizeChange = () => {
       if (isFlatListReady) {
          flatListRef.current.scrollToEnd();
       }
    };
 
+   const handleGoBack = () => {
+      navigation.goBack();
+   };
+
    return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={0}>
          <View style={styles.header}>
-            <Ionicons name="chevron-back" size={30} color="white" />
+            <Ionicons onPress={handleGoBack} name="chevron-back" size={30} color="white" />
             <Text style={styles.headerText}>ChatGPT API</Text>
             <Ionicons name="ellipsis-vertical" size={30} color="white" />
          </View>
