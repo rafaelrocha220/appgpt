@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { checkUserCredentials } from '../services/database';
 
 export default function LoginScreen() {
    const navigation = useNavigation();
    const [name, setName] = useState('');
    const [password, setPassword] = useState('');
 
-   const handleLogin = () => {
-      if (name == 'admin' && password == 'admin') {
+   const handleLogin = async () => {
+      const checkLogin = await checkUserCredentials(name, password)
+      if (checkLogin) {
          navigation.navigate('Chat')
       } else {
          alert('Opss! Login incorreto.')

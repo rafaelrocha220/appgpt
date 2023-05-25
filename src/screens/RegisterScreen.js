@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { registerUser } from '../services/database';
 
 export default function RegisterScreen() {
    const navigation = useNavigation();
@@ -11,6 +12,7 @@ export default function RegisterScreen() {
 
    const handleLogin = () => {
       if (name !== '' && password !== '' && passwordConfirm == password) {
+         registerUser(name, password)
          navigation.navigate('Chat')
       } else {
          alert('Você preencheu todos os campos corretamente?')
